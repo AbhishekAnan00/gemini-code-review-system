@@ -1,9 +1,13 @@
 # AI Code Review System
 
-This project is an *AI-Powered Code Review System* that uses *Gemini AI* to analyze and provide feedback on code. It consists of:
+This project is an *AI-Powered Code Review System* that uses *Gemini AI* to analyze and provide feedback on code.
 
+![Image](https://github.com/user-attachments/assets/43c1c965-027c-4b00-900e-0cbc1637a49b)
+
+ It consists of:
 - *Frontend* (Deployed on Vercel)
 - *Backend* (Deployed on Render)
+
 
 ## 🔗 Live Demo
 
