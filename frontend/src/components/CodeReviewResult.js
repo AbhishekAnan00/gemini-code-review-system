@@ -1,43 +1,35 @@
 "use client";
-export default function CodeReviewResult({ review }) {
+export default function CodeReviewResult({ messages, messagesEndRef }) {
   return (
-    <div
-      style={{
-        marginTop: "2rem",
-        padding: "1.5rem",
-        background: "rgba(255, 255, 255, 0.2)",
-        borderRadius: "6px",
-        border: "none",
-        fontFamily: "monospace",
-        fontSize: "1rem",
-        whiteSpace: "pre-wrap",
-        overflowX: "auto",
-        color: "#fff",
-      }}
-    >
-      <h2
-        style={{
-          marginBottom: "1rem",
-          color: "#fff",
-          fontSize: "1.5rem",
-        }}
-      >
-        Review Result
-      </h2>
-      <pre
-        style={{
-          whiteSpace: "pre-wrap",
-          wordBreak: "break-word",
-          color: "#fff",
-          padding: "1rem",
-          background: "rgba(0,0,0,0.5)",
-          borderRadius: "6px",
-          overflowX: "auto",
-          maxWidth: "100%",
-        }}
-      >
-        {review}
-      </pre>
+    <div>
+      {messages.map((msg, index) => {
+        const isUser = msg.sender === "user";
+        return (
+          <div
+            key={index}
+            style={{
+              display: "flex",
+              justifyContent: isUser ? "flex-end" : "flex-start",
+              marginBottom: "1rem",
+            }}
+          >
+            <div
+              style={{
+                maxWidth: "70%",
+                padding: "1rem",
+                borderRadius: "10px",
+                background: isUser ? "rgba(0, 123, 255, 0.8)" : "rgba(108, 117, 125, 0.8)",
+                color: "#fff",
+                fontFamily: "monospace",
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-word",
+              }}
+            >
+              {msg.text}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

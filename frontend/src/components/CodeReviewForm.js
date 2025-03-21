@@ -2,18 +2,26 @@
 import { useState } from "react";
 import axios from "axios";
 
-export default function CodeReviewForm({ setReview }) {
+export default function CodeReviewForm({ setMessages }) {
   const [code, setCode] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!code.trim()) return;
+    // Append user's code message
+    setMessages((prev) => [...prev, { sender: "user", text: code }]);
     try {
       const { data } = await axios.post("http://localhost:5000/api/review", { code });
-      setReview(data.review);
+      // Append assistant's review message
+      setMessages((prev) => [...prev, { sender: "assistant", text: data.review }]);
     } catch (error) {
       console.error("Error in code review:", error);
-      setReview("Error fetching review. Please try again.");
+      setMessages((prev) => [
+        ...prev,
+        { sender: "assistant", text: "Error fetching review. Please try again." },
+      ]);
     }
+    setCode("");
   };
 
   return (
@@ -21,8 +29,7 @@ export default function CodeReviewForm({ setReview }) {
       onSubmit={handleSubmit}
       style={{
         display: "flex",
-        flexDirection: "column",
-        gap: "1rem",
+        gap: "0.5rem",
         width: "100%",
       }}
     >
@@ -30,13 +37,12 @@ export default function CodeReviewForm({ setReview }) {
         value={code}
         onChange={(e) => setCode(e.target.value)}
         placeholder="Paste your code here..."
-        rows={12}
+        rows={4}
         style={{
-          width: "100%",
-          minHeight: "200px",
-          padding: "1rem",
+          flex: 1,
+          padding: "0.75rem",
           fontFamily: "monospace",
-          fontSize: "1rem",
+          fontSize: "0.9rem",
           borderRadius: "6px",
           border: "none",
           background: "rgba(255,255,255,0.2)",
@@ -48,17 +54,22 @@ export default function CodeReviewForm({ setReview }) {
       <button
         type="submit"
         style={{
-          padding: "0.75rem 1.5rem",
+          padding: "0.75rem 1rem",
           background: "linear-gradient(90deg, #ff416c, #ff4b2b)",
           color: "#fff",
           border: "none",
           borderRadius: "6px",
-          fontSize: "1rem",
+          fontSize: "0.9rem",
           cursor: "pointer",
           transition: "background 0.3s",
+          alignSelf: "flex-end",
         }}
-        onMouseOver={(e) => (e.target.style.background = "linear-gradient(90deg, #ff4b2b, #ff416c)")}
-        onMouseOut={(e) => (e.target.style.background = "linear-gradient(90deg, #ff416c, #ff4b2b)")}
+        onMouseOver={(e) =>
+          (e.target.style.background = "linear-gradient(90deg, #ff4b2b, #ff416c)")
+        }
+        onMouseOut={(e) =>
+          (e.target.style.background = "linear-gradient(90deg, #ff416c, #ff4b2b)")
+        }
       >
         Review Code
       </button>
